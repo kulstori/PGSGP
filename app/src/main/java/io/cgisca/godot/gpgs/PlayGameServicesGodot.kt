@@ -85,6 +85,7 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
         return BuildConfig.LIBRARY_PACKAGE_NAME
     }
 
+    @Deprecated("Deprecated in Java")
     override fun getPluginMethods(): MutableList<String> {
         return mutableListOf(
             "init",
@@ -149,7 +150,7 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
 
     override fun onMainActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == SignInController.RC_SIGN_IN) {
-            val googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+            val googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data!!)
             signInController.onSignInActivityResult(googleSignInResult)
         } else if (requestCode == SavedGamesController.RC_SAVED_GAMES) {
             if (data != null) {
