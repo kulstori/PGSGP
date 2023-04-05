@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 29
@@ -30,6 +29,10 @@ android {
         variant.outputs.all { output ->
             output.outputFileName = "$libName.${variant.name}.aar"
         }
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 }
 
