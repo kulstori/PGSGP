@@ -26,6 +26,7 @@ class SignInController(
     }
 
     fun signIn(googleSignInClient: GoogleSignInClient) {
+        Log.i("godot","Attempting To Sign In")
         val userProfile = UserProfile(null, null, null, null, null)
         val connection: Pair<Boolean, UserProfile> = connectionController.isConnected()
         if (connection.first) {

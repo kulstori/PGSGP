@@ -2,36 +2,33 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
     namespace 'io.cgisca.godot.gpgs'
+    def libName = project.property("library_name")
     defaultConfig {
-        minSdkVersion 24
-        targetSdkVersion 33
-        versionCode 1
-        versionName "1.0"
-    }
 
+        targetSdk 34
+        buildConfigField "String", "LIBRARY_NAME", "\"$libName\""
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
-
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
-
-    def libName = project.property("library_name")
-
     defaultConfig {
-        buildConfigField "String", "LIBRARY_NAME", "\"$libName\""
+        minSdkVersion 24
+        versionCode 1
+        versionName "1.0"
     }
+
 
     libraryVariants.all { variant ->
         variant.outputs.all { output ->
@@ -43,6 +40,7 @@ android {
         viewBinding true
         buildConfig true
     }
+    buildToolsVersion '34.0.0'
 }
 
 dependencies {
@@ -50,6 +48,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.google.android.gms:play-services-games:23.1.0'
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'com.google.code.gson:gson:2.8.9'
 
     testImplementation 'junit:junit:4.13.2'

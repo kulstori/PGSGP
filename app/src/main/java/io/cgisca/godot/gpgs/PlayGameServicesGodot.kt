@@ -2,6 +2,7 @@ package io.cgisca.godot.gpgs
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.auth.api.Auth
@@ -187,6 +188,8 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
 
     private fun initialize(enableSaveGamesFunctionality: Boolean, enablePopups: Boolean, saveGameName: String,
                            requestEmail: Boolean, requestProfile: Boolean, requestToken: String) {
+        Log.i("godot","Initalizing PGSGP")
+
         this.saveGameName = saveGameName
         val signInOptions = run {
             val signInOptionsBuilder = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN)
@@ -215,11 +218,15 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
         googleSignInClient = GoogleSignIn.getClient(godot.activity as Activity, signInOptions)
 
         runOnUiThread {
+            Log.i("godot","enabling popups : " + enablePopups)
+            Log.i("godot", "created sigin in Controller" + signInController)
+
             signInController.setShowPopups(enablePopups)
         }
     }
 
     fun signIn() {
+        Log.i("godot","Attempting To Sign In")
         runOnUiThread {
             signInController.signIn(googleSignInClient)
         }
@@ -395,6 +402,14 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
 
     override fun onEventsLoadingFailed() {
         emitSignal(SIGNAL_EVENTS_LOADED_FAILED.name)
+    }
+
+    override fun onCurrentPlayerLeaderBoardScoreLoadingFailed(leaderboardId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onCurrentPlayerLeaderBoardScoreLoaded(leaderboardId: String, scoreJson: String) {
+        TODO("Not yet implemented")
     }
 
     override fun onLeaderBoardScoreSubmitted(leaderboardId: String) {
