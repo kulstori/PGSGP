@@ -88,7 +88,7 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
     }
 
     override fun getPluginName(): String {
-        return BuildConfig.LIBRARY_PACKAGE_NAME
+        return "GodotPlayGamesServices"
     }
 
     @Deprecated("Deprecated in Java")

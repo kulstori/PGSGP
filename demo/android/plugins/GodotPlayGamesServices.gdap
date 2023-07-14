@@ -2,7 +2,7 @@
 
 name="GodotPlayGamesServices"
 binary_type="local"
-binary="GodotPlayGamesServices.debug.aar"
+binary="GodotPlayGamesServices.release.aar"
 
 [dependencies]
 
