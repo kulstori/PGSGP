@@ -1,5 +1,5 @@
-# Google Play Games Services Plugin for Godot 4
-This is an Android Play Games Services plugin for Godot Game Engine 4.1.
+# Google Play Games Services Plugin for Godot 4.2.x
+This is an Android Play Games Services plugin for Godot Game Engine 4.2.x.
 
 [![Android](https://img.shields.io/badge/Platform-Android-brightgreen.svg)](https://developer.android.com)
 [![Godot](https://img.shields.io/badge/Godot%20Engine-3.5.2-blue.svg)](https://github.com/godotengine/godot/)
@@ -53,7 +53,7 @@ In short follow these steps:
 
 1. Download [ AAR library for Android plugins](https://godotengine.org/download/windows "Godot download").
 
-2. Copy .aar file to *godot-lib.release/* and rename it to *godot-lib.release.aar*
+2. Copy .aar file to `godot-lib.release/*` and rename it to `godot-lib.4.2.1.stable.template_release.aar`
 
 3. Compile the project:
 
