@@ -44,7 +44,7 @@ android {
 }
 
 dependencies {
-    compileOnly fileTree(dir: '../libs', include: ['godot-lib*.aar'])
+    compileOnly fileTree(dir: '../godot-lib.release', include: ['godot-lib.4.2.1.stable.template_release.aar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.google.android.gms:play-services-games:23.1.0'
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
