@@ -33,6 +33,7 @@ import org.godotengine.godot.BuildConfig
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.GodotPlugin
 import org.godotengine.godot.plugin.SignalInfo
+import org.godotengine.godot.plugin.UsedByGodot
 import java.math.BigInteger
 import java.util.Random
 
@@ -172,16 +173,18 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
             }
         }
     }
-
+    @UsedByGodot
     fun isGooglePlayServicesAvailable(): Boolean {
         val result: Int = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(godot.getActivity() as Activity)
         return result == ConnectionResult.SUCCESS
     }
 
+    @UsedByGodot
     fun init(enablePopups: Boolean, requestEmail: Boolean, requestProfile: Boolean, requestToken: String) {
         initialize(false, enablePopups, "DefaultGame", requestEmail, requestProfile, requestToken)
     }
 
+    @UsedByGodot
     fun initWithSavedGames(enablePopups: Boolean, saveGameName: String, requestEmail: Boolean, requestProfile: Boolean, requestToken: String) {
         initialize(true, enablePopups, saveGameName, requestEmail, requestProfile, requestToken)
     }
@@ -225,6 +228,7 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
         }
     }
 
+    @UsedByGodot
     fun signIn() {
         Log.i("godot","Attempting To Sign In")
         runOnUiThread {
@@ -232,118 +236,135 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
         }
     }
 
+    @UsedByGodot
     fun signOut() {
         runOnUiThread {
             signInController.signOut(googleSignInClient)
         }
     }
 
+    @UsedByGodot
     fun isSignedIn(): Boolean {
         return signInController.isSignedIn()
     }
 
+    @UsedByGodot
     fun showAchievements() {
         runOnUiThread {
             achievementsController.showAchievements()
         }
     }
 
+    @UsedByGodot
     fun unlockAchievement(achievementName: String) {
         runOnUiThread {
             achievementsController.unlockAchievement(achievementName)
         }
     }
 
+    @UsedByGodot
     fun revealAchievement(achievementName: String) {
         runOnUiThread {
             achievementsController.revealAchievement(achievementName)
         }
     }
 
+    @UsedByGodot
     fun incrementAchievement(achievementName: String, step: Int) {
         runOnUiThread {
             achievementsController.incrementAchievement(achievementName, step)
         }
     }
 
+    @UsedByGodot
     fun setAchievementSteps(achievementName: String, steps: Int) {
         runOnUiThread {
             achievementsController.setAchievementSteps(achievementName, steps)
         }
     }
 
+    @UsedByGodot
     fun loadAchievementInfo(forceReload: Boolean) {
         runOnUiThread {
             achievementsController.loadAchievementInfo(forceReload)
         }
     }
 
+    @UsedByGodot
     fun showLeaderBoard(leaderBoardId: String) {
         runOnUiThread {
             leaderboardsController.showLeaderboard(leaderBoardId)
         }
     }
 
+    @UsedByGodot
     fun showAllLeaderBoards() {
         runOnUiThread {
             leaderboardsController.showAllLeaderboards()
         }
     }
 
+    @UsedByGodot
     fun submitLeaderBoardScore(leaderBoardId: String, score: Int) {
         runOnUiThread {
             leaderboardsController.submitScore(leaderBoardId, score)
         }
     }
 
+    @UsedByGodot
     fun submitEvent(eventId: String, incrementBy: Int) {
         runOnUiThread {
             eventsController.submitEvent(eventId, incrementBy)
         }
     }
 
+    @UsedByGodot
     fun loadEvents() {
         runOnUiThread {
             eventsController.loadEvents()
         }
     }
 
+    @UsedByGodot
     fun loadEventsById(ids: Array<String>) {
         runOnUiThread {
             eventsController.loadEventById(ids)
         }
     }
 
+    @UsedByGodot
     fun loadPlayerStats(forceRefresh: Boolean) {
         runOnUiThread {
             playerStatsController.checkPlayerStats(forceRefresh)
         }
     }
 
+    @UsedByGodot
     fun showSavedGames(title: String, allowAdBtn: Boolean, allowDeleteBtn: Boolean, maxNumberOfSavedGamesToShow: Int) {
         runOnUiThread {
             savedGamesController.showSavedGamesUI(title, allowAdBtn, allowDeleteBtn, maxNumberOfSavedGamesToShow)
         }
     }
 
+    @UsedByGodot
     fun saveSnapshot(name: String, data: String, description: String) {
         runOnUiThread {
             savedGamesController.saveSnapshot(name, data, description)
         }
     }
-
+    @UsedByGodot
     fun loadSnapshot(name: String) {
         runOnUiThread {
             savedGamesController.loadSnapshot(name)
         }
     }
 
+    @UsedByGodot
     fun loadPlayerInfo() {
         runOnUiThread {
             playerInfoController.fetchPlayerInfo()
         }
     }
-
     override fun onAchievementUnlocked(achievementName: String) {
         emitSignal(SIGNAL_ACHIEVEMENT_UNLOCKED.name, achievementName)
     }

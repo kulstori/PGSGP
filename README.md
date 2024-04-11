@@ -33,6 +33,15 @@ Before using this plugin please follow instructions on [Setting Up Google Play G
    	<meta-data android:name="com.google.android.gms.version"
    	   android:value="@integer/google_play_services_version"/>
 ```
+
+- Also add in a file called integers.xml in that same directory and add the following:
+```
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    	<integer name="google_play_services_version">12451000</integer>
+</resources>
+```
+
 - In the same res://android/build directory,(if it is not already created) create  `res` -> `values` -> `Strings.xml`. Add below lines to `Strings.xml`:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
