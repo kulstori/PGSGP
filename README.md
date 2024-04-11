@@ -35,7 +35,7 @@ Before using this plugin please follow instructions on [Setting Up Google Play G
 ```
 
 - Also add in a file called integers.xml in that same directory and add the following:
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     	<integer name="google_play_services_version">12451000</integer>
