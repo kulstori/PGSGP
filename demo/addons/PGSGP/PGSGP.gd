@@ -36,9 +36,9 @@ class AndroidExportPlugin extends EditorExportPlugin:
 	func _get_android_dependencies(platform, debug):
 		# TODO: Add remote dependices here.
 		if debug:
-			return PackedStringArray([])
+			return PackedStringArray(["com.google.android.gms:play-services-games:23.1.0","com.google.android.gms:play-services-auth:20.6.0", "com.google.code.gson:gson:2.8.6"])
 		else:
-			return PackedStringArray([])
+			return PackedStringArray(["com.google.android.gms:play-services-games:23.1.0","com.google.android.gms:play-services-auth:20.6.0", "com.google.code.gson:gson:2.8.6"])
 	# Return the plugin's name.
 	func _get_name():
 		return _plugin_name
