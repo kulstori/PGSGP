@@ -121,9 +121,9 @@ if Engine.has_singleton("GodotPlayGamesServices"):
   play_games_services.connect("_on_leaderboard_score_submitted", self, "_on_leaderboard_score_submitted") # leaderboard_id: String
   play_games_services.connect("_on_leaderboard_score_submitting_failed", self, "_on_leaderboard_score_submitting_failed") # leaderboard_id: String
   play_games_services.connect("_on_game_saved_success", self, "_on_game_saved_success") # no params
-  play_games_services.connect("_on_game_saved_fail", self, "_on_game_saved_fail") # no params
+  play_games_services.connect("_on_game_saved_fail", self, "_on_game_saved_fail") # data: String
   play_games_services.connect("_on_game_load_success", self, "_on_game_load_success") # data: String
-  play_games_services.connect("_on_game_load_fail", self, "_on_game_load_fail") # no params
+  play_games_services.connect("_on_game_load_fail", self, "_on_game_load_fail") # data: String
   play_games_services.connect("_on_create_new_snapshot", self, "_on_create_new_snapshot") # name: String
   play_games_services.connect("_on_player_info_loaded", self, "_on_player_info_loaded")  # json_response: String
   play_games_services.connect("_on_player_info_loading_failed", self, "_on_player_info_loading_failed")

@@ -59,11 +59,11 @@ class SavedGamesController(
                 if (task.isSuccessful) {
                     savedGamesListener.onSavedGameSuccess()
                 } else {
-                    savedGamesListener.onSavedGameFailed()
+                    savedGamesListener.onSavedGameFailed("Failed to write Snapshot:")
                 }
             }
         } else {
-            savedGamesListener.onSavedGameFailed()
+            savedGamesListener.onSavedGameFailed("No Conection to Gooleplay")
         }
     }
 
@@ -76,9 +76,10 @@ class SavedGamesController(
         if (connectionController.isConnected().first && googleSignInAccount != null) {
             val snapshotsClient = Games.getSnapshotsClient(activity, googleSignInAccount)
             val conflictResolutionPolicy = SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED
-            snapshotsClient.open(gameName, true, conflictResolutionPolicy)
+            val validGameName = gameName.replace("\\s.".toRegex(),"_")
+            snapshotsClient.open(validGameName, true, conflictResolutionPolicy)
                 .addOnFailureListener {
-                    savedGamesListener.onSavedGameFailed()
+                    savedGamesListener.onSavedGameFailed("Failed to save Game: ${it.message}")
                 }
                 .continueWith<Pair<Snapshot, ByteArray>>(
                     Continuation<DataOrConflict<Snapshot>, Pair<Snapshot, ByteArray>> { task ->
@@ -94,11 +95,11 @@ class SavedGamesController(
                         val data = task.result!!.second
                         writeSnapshot(snapshot, data, description)
                     } else {
-                        savedGamesListener.onSavedGameFailed()
+                        savedGamesListener.onSavedGameFailed("Save Task not succesfull or taks result is null")
                     }
                 }
         } else {
-            savedGamesListener.onSavedGameFailed()
+            savedGamesListener.onSavedGameFailed("No COnection to Google PLay")
         }
     }
 
@@ -107,9 +108,10 @@ class SavedGamesController(
         if (connectionController.isConnected().first && googleSignInAccount != null) {
             val snapshotsClient = Games.getSnapshotsClient(activity, googleSignInAccount)
             val conflictResolutionPolicy = SnapshotsClient.RESOLUTION_POLICY_MOST_RECENTLY_MODIFIED
-            snapshotsClient.open(gameName, true, conflictResolutionPolicy)
+            val validGameName = gameName.replace("\\s.".toRegex(),"_")
+            snapshotsClient.open(validGameName, true, conflictResolutionPolicy)
                 .addOnFailureListener {
-                    savedGamesListener.onSavedGameLoadFailed()
+                    savedGamesListener.onSavedGameLoadFailed("Failed to load Game: ${it.message}")
                 }
                 .continueWith<ByteArray>(Continuation { task ->
                     val snapshot = task.result
@@ -130,11 +132,11 @@ class SavedGamesController(
                             savedGamesListener.onSavedGameLoadSuccess(data)
                         }
                     } else {
-                        savedGamesListener.onSavedGameLoadFailed()
+                        savedGamesListener.onSavedGameLoadFailed("Load Task not Succesfull")
                     }
                 }
         } else {
-            savedGamesListener.onSavedGameLoadFailed()
+            savedGamesListener.onSavedGameLoadFailed("No Conection to GoolePlay")
         }
     }
 
