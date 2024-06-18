@@ -63,7 +63,7 @@ class SavedGamesController(
                 }
             }
         } else {
-            savedGamesListener.onSavedGameFailed("No Conection to Gooleplay")
+            savedGamesListener.onSavedGameFailed("No Connection to Googleplay")
         }
     }
 
@@ -95,11 +95,11 @@ class SavedGamesController(
                         val data = task.result!!.second
                         writeSnapshot(snapshot, data, description)
                     } else {
-                        savedGamesListener.onSavedGameFailed("Save Task not succesfull or taks result is null")
+                        savedGamesListener.onSavedGameFailed("Save Task not successful or task result is null")
                     }
                 }
         } else {
-            savedGamesListener.onSavedGameFailed("No COnection to Google PLay")
+            savedGamesListener.onSavedGameFailed("No Connection to Google PLay")
         }
     }
 
@@ -132,11 +132,11 @@ class SavedGamesController(
                             savedGamesListener.onSavedGameLoadSuccess(data)
                         }
                     } else {
-                        savedGamesListener.onSavedGameLoadFailed("Load Task not Succesfull")
+                        savedGamesListener.onSavedGameLoadFailed("Load Task not Successful")
                     }
                 }
         } else {
-            savedGamesListener.onSavedGameLoadFailed("No Conection to GoolePlay")
+            savedGamesListener.onSavedGameLoadFailed("No Conection to GooglePlay")
         }
     }
 
