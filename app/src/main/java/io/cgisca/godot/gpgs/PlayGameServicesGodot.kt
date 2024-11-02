@@ -157,6 +157,7 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
     }
 
     override fun onMainActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    if (::signInController.isInitialized) {
         if (requestCode == SignInController.RC_SIGN_IN) {
             val googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data!!)
             signInController.onSignInActivityResult(googleSignInResult)
@@ -172,7 +173,10 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
                 }
             }
         }
+    } else {
+        Log.e("PlayGameServicesGodot", "signInController is not initialized.")
     }
+}
     @UsedByGodot
     fun isGooglePlayServicesAvailable(): Boolean {
         val result: Int = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(godot.getActivity() as Activity)
