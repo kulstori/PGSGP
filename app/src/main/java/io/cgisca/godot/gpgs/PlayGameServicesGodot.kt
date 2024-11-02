@@ -70,6 +70,7 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
         val SIGNAL_ACHIEVEMENT_INFO_LOAD = SignalInfo("_on_achievement_info_loaded", String::class.java)
         val SIGNAL_ACHIEVEMENT_INFO_LOAD_FAILED = SignalInfo("_on_achievement_info_load_failed", String::class.java)
         val SIGNAL_LEADERBOARD_SCORE_SUBMITTED = SignalInfo("_on_leaderboard_score_submitted", String::class.java)
+        val SIGNAL_CURRENT_PLAYER_LEADERBOARD_SCORE_LOADED = SignalInfo("_on_current_player_leaderboard_score_loaded", String::class.java)
         val SIGNAL_LEADERBOARD_SCORE_SUBMITTED_FAILED =
             SignalInfo("_on_leaderboard_score_submitting_failed", String::class.java)
         val SIGNAL_EVENT_SUBMITTED = SignalInfo("_on_event_submitted", String::class.java)
@@ -139,6 +140,7 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
             SIGNAL_ACHIEVEMENT_INFO_LOAD_FAILED,
             SIGNAL_LEADERBOARD_SCORE_SUBMITTED,
             SIGNAL_LEADERBOARD_SCORE_SUBMITTED_FAILED,
+            SIGNAL_CURRENT_PLAYER_LEADERBOARD_SCORE_LOADED,
             SIGNAL_EVENT_SUBMITTED,
             SIGNAL_EVENT_SUBMITTED_FAILED,
             SIGNAL_EVENTS_LOADED,
@@ -157,26 +159,32 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
     }
 
     override fun onMainActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    if (::signInController.isInitialized) {
-        if (requestCode == SignInController.RC_SIGN_IN) {
-            val googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data!!)
-            signInController.onSignInActivityResult(googleSignInResult)
-        } else if (requestCode == SavedGamesController.RC_SAVED_GAMES) {
-            if (data != null) {
-                if (data.hasExtra(SnapshotsClient.EXTRA_SNAPSHOT_METADATA)) {
-                    data.getParcelableExtra<SnapshotMetadata>(SnapshotsClient.EXTRA_SNAPSHOT_METADATA)?.let {
-                        savedGamesController.loadSnapshot(it.uniqueName)
+        if (::signInController.isInitialized) {
+            if (requestCode == SignInController.RC_SIGN_IN) {
+                if (data != null) {
+                    val googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+                    signInController.onSignInActivityResult(googleSignInResult)
+                } else {
+                    Log.e("PlayGameServicesGodot", "Intent data is null.")
+                }
+            } else if (requestCode == SavedGamesController.RC_SAVED_GAMES) {
+                if (data != null) {
+                    if (data.hasExtra(SnapshotsClient.EXTRA_SNAPSHOT_METADATA)) {
+                        data.getParcelableExtra<SnapshotMetadata>(SnapshotsClient.EXTRA_SNAPSHOT_METADATA)?.let {
+                            savedGamesController.loadSnapshot(it.uniqueName)
+                        }
+                    } else if (data.hasExtra(SnapshotsClient.EXTRA_SNAPSHOT_NEW)) {
+                        val unique = BigInteger(281, Random()).toString(13)
+                        savedGamesController.createNewSnapshot("$saveGameName$unique")
                     }
-                } else if (data.hasExtra(SnapshotsClient.EXTRA_SNAPSHOT_NEW)) {
-                    val unique = BigInteger(281, Random()).toString(13)
-                    savedGamesController.createNewSnapshot("$saveGameName$unique")
+                } else {
+                    Log.e("PlayGameServicesGodot", "Saved games intent data is null.")
                 }
             }
+        } else {
+            Log.e("PlayGameServicesGodot", "signInController is not initialized.")
         }
-    } else {
-        Log.e("PlayGameServicesGodot", "signInController is not initialized.")
     }
-}
     @UsedByGodot
     fun isGooglePlayServicesAvailable(): Boolean {
         val result: Int = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(godot.getActivity() as Activity)
@@ -430,11 +438,11 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
     }
 
     override fun onCurrentPlayerLeaderBoardScoreLoadingFailed(leaderboardId: String) {
-        TODO("Not yet implemented")
+       emitSignal(SIGNAL_LEADERBOARD_SCORE_SUBMITTED_FAILED.name, leaderboardId)
     }
 
     override fun onCurrentPlayerLeaderBoardScoreLoaded(leaderboardId: String, scoreJson: String) {
-        TODO("Not yet implemented")
+        emitSignal(SIGNAL_CURRENT_PLAYER_LEADERBOARD_SCORE_LOADED.name, leaderboardId, scoreJson)
     }
 
     override fun onLeaderBoardScoreSubmitted(leaderboardId: String) {

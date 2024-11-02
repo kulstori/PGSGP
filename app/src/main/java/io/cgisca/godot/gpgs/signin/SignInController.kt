@@ -36,7 +36,9 @@ class SignInController(
         } else {
             Log.i("godot","Using new signin data")
             googleSignInClient
-                .silentSignIn()
+                .silentSignIn().addOnFailureListener{ exception ->
+                    Log.e("SignInController", "Silent sign-in failed: ${exception.message}")
+                }
                 .addOnCompleteListener(activity) { task ->
                     if (task.isSuccessful) {
                         val googleSignInAccount = task.result
