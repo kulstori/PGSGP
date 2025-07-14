@@ -249,7 +249,7 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
     @UsedByGodot
     fun signOut() {
         runOnUiThread {
-            signInController.signOut(googleSignInClient)
+            signInController.signOut()
         }
     }
 
