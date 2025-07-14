@@ -3,9 +3,9 @@ package io.cgisca.godot.gpgs.signin
 import android.app.Activity
 import android.util.Log
 import android.util.Pair
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInResult
+import com.google.android.gms.games.PlayGames
+import com.google.android.gms.games.GamesSignInClient
+import com.google.android.gms.games.GamesSignInClient.Authenticated
 import com.google.android.gms.games.Games
 import io.cgisca.godot.gpgs.ConnectionController
 
@@ -25,42 +25,32 @@ class SignInController(
         showPlayPopups = enablePopUps
     }
 
-    fun signIn(googleSignInClient: GoogleSignInClient) {
-        Log.i("godot","Attempting To Sign In")
-        val userProfile = UserProfile(null, null, null, null, null)
-        val connection: Pair<Boolean, UserProfile> = connectionController.isConnected()
-        if (connection.first) {
-            Log.i("godot","Using cached signin data")
-            signInListener.onSignedInSuccessfully(connection.second)
+    fun signIn() {
+    Log.i("godot", "Attempting to sign in (v2)")
+    val userProfile = UserProfile(null, null, null, null, null)
+    val signInClient = PlayGames.getGamesSignInClient(activity)
+
+    signInClient.isAuthenticated.addOnCompleteListener { task ->
+        val status = task.result
+        if (status == Authenticated) {
+            Log.i("godot", "Already signed in")
+            signInListener.onSignedInSuccessfully(userProfile)
             enablePopUps()
         } else {
-            Log.i("godot","Using new signin data")
-            googleSignInClient
-                .silentSignIn().addOnFailureListener{ exception ->
-                    Log.e("SignInController", "Silent sign-in failed: ${exception.message}")
+            Log.i("godot", "Launching sign-in UI")
+            signInClient.signIn().addOnCompleteListener { signInTask ->
+                if (signInTask.isSuccessful) {
+                    Log.i("godot", "Sign-in success")
+                    signInListener.onSignedInSuccessfully(userProfile)
+                    enablePopUps()
+                } else {
+                    Log.e("godot", "Sign-in failed: ${signInTask.exception?.message}")
+                    signInListener.onSignInFailed(-1)
                 }
-                .addOnCompleteListener(activity) { task ->
-                    if (task.isSuccessful) {
-                        val googleSignInAccount = task.result
-                        if (googleSignInAccount != null) {
-                            userProfile.let {
-                                it.displayName = googleSignInAccount.displayName
-                                it.email = googleSignInAccount.email
-                                it.token = googleSignInAccount.idToken
-                                it.authCode = googleSignInAccount.serverAuthCode
-                                it.id = googleSignInAccount.id
-                            }
-                        }
-
-                        signInListener.onSignedInSuccessfully(userProfile)
-                        enablePopUps()
-                    } else {
-                        val intent = googleSignInClient.signInIntent
-                        activity.startActivityForResult(intent, RC_SIGN_IN)
-                    }
-                }
+            }
         }
     }
+}
 
     fun onSignInActivityResult(googleSignInResult: GoogleSignInResult?) {
         val userProfile = UserProfile(null, null, null, null, null)
