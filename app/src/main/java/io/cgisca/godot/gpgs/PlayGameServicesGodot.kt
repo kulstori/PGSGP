@@ -5,6 +5,7 @@ import android.content.Intent
 import android.util.Log
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.games.PlayGames
 import com.google.android.gms.games.GamesSignInClient
 import com.google.android.gms.games.GamesSignInClient.Authenticated
