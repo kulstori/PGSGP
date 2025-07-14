@@ -5,10 +5,9 @@ import android.content.Intent
 import android.util.Log
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.games.PlayGames
+import com.google.android.gms.games.GamesSignInClient
+import com.google.android.gms.games.GamesSignInClient.Authenticated
 import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.games.SnapshotsClient
@@ -48,7 +47,6 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
     private lateinit var playerStatsController: PlayerStatsController
     private lateinit var playerInfoController: PlayerInfoController
     private lateinit var savedGamesController: SavedGamesController
-    private lateinit var googleSignInClient: GoogleSignInClient
 
     private lateinit var saveGameName: String
 
