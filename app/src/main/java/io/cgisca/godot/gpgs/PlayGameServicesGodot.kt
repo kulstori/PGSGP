@@ -242,7 +242,7 @@ class PlayGameServicesGodot(godot: Godot) : GodotPlugin(godot), AchievementsList
     fun signIn() {
         Log.i("godot","Attempting To Sign In")
         runOnUiThread {
-            signInController.signIn(googleSignInClient)
+            signInController.signIn()
         }
     }
 
