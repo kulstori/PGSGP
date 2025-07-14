@@ -52,39 +52,18 @@ class SignInController(
     }
 }
 
-    fun onSignInActivityResult(googleSignInResult: GoogleSignInResult?) {
-        val userProfile = UserProfile(null, null, null, null, null)
-        if (googleSignInResult != null && googleSignInResult.isSuccess) {
-            val googleSignInAccount = googleSignInResult.signInAccount
-            if (googleSignInAccount != null) {
-                userProfile.let {
-                    it.displayName = googleSignInAccount.displayName
-                    it.email = googleSignInAccount.email
-                    it.token = googleSignInAccount.idToken
-                    it.authCode = googleSignInAccount.serverAuthCode
-                    it.id = googleSignInAccount.id
-                }
-            }
-            enablePopUps()
-            signInListener.onSignedInSuccessfully(userProfile)
-        } else {
-            var statusCode = Int.MIN_VALUE
-            googleSignInResult?.status?.let {
-                statusCode = it.statusCode
-            }
-            signInListener.onSignInFailed(statusCode)
-        }
-    }
 
-    fun signOut(googleSignInClient: GoogleSignInClient) {
-        googleSignInClient.signOut().addOnCompleteListener(activity) { task ->
-            if (task.isSuccessful) {
-                signInListener.onSignOutSuccess()
-            } else {
-                signInListener.onSignOutFailed()
-            }
+    fun signOut() {
+    val signInClient = PlayGames.getGamesSignInClient(activity)
+    signInClient.signOut().addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            signInListener.onSignOutSuccess()
+        } else {
+            signInListener.onSignOutFailed()
         }
     }
+}
+
 
     fun isSignedIn(): Boolean {
         val googleSignInAccount = GoogleSignIn.getLastSignedInAccount(activity)
