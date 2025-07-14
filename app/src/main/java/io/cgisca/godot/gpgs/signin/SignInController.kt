@@ -66,17 +66,12 @@ class SignInController(
 
 
     fun isSignedIn(): Boolean {
-        val googleSignInAccount = GoogleSignIn.getLastSignedInAccount(activity)
-        return connectionController.isConnected().first && googleSignInAccount != null
+        return connectionController.isConnected().first
     }
 
     private fun enablePopUps() {
         if (showPlayPopups) {
-            val lastSignedInAccount = GoogleSignIn.getLastSignedInAccount(activity)
-            if (lastSignedInAccount != null) {
-                Games.getGamesClient(activity, lastSignedInAccount)
-                    .setViewForPopups(activity.findViewById(android.R.id.content))
-            }
+            PlayGames.getGamesClient(activity).setViewForPopups(activity.findViewById(android.R.id.content))
         }
     }
 }
